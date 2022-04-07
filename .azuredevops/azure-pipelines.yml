@@ -5,7 +5,13 @@ parameters:
     displayName: Modules To Publish
     type: object
     default:
+      - name: app-service-plan
+        version: 0.1
+      - name: function-app
+        version: 0.1
       - name: resource-group
+        version: 0.1
+      - name: storage-account
         version: 0.1
 
 variables:
