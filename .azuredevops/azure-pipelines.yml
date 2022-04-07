@@ -6,10 +6,11 @@ parameters:
     type: object
     default:
       - name: resource-group
-        version: 0.0.1
+        version: 0.1
 
 variables:
   containerRegistry: acrmarcelmichau
+  modulePath: bicep/modules
 
 stages:
   - stage: Publish
@@ -25,5 +26,6 @@ stages:
                   azureSubscription: PersonalSubscriptionServiceConnection
                   scriptLocation: 'inlineScript'
                   inlineScript: |
-                    az bicep publish --file modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/bicep/modules/${{module.name}}:v${{module.version}}
+                    echo 'modules/${{module.name}}/main.bicep'
+                    az bicep publish --file modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/$(modulePath)/${{module.name}}:v${{module.version}}
                 displayName: 'Publish Bicep Module - ${{module.name}}'
