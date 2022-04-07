@@ -1,0 +1,29 @@
+trigger: none
+
+parameters:
+  - name: modulesToPublish
+    displayName: Modules To Publish
+    type: object
+    default:
+      - name: resource-group
+        version: 0.0.1
+
+variables:
+  containerRegistry: acrmarcelmichau
+
+stages:
+  - stage: Publish
+    jobs:
+      - job: Publish
+        pool:
+          vmImage: ubuntu-latest
+
+        steps:
+          - ${{ each module in parameters.modulesToPublish }}:
+              - task: AzureCLI@1
+                inputs:
+                  azureSubscription: ServiceConnectionHere
+                  scriptLocation: 'inlineScript'
+                  inlineScript: |
+                    az bicep publish --file ../modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/bicep/modules/${{module.name}}:v${{module.version}}
+                displayName: 'Publish Bicep Module - ${{module.name}}'
