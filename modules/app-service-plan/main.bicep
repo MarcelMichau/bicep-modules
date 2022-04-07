@@ -8,7 +8,10 @@ param location string = 'location'
 param tags object = {}
 
 @description('Sku of the App Service Plan - https://docs.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?tabs=bicep#skudescription')
-param sku object = {}
+param sku object = {
+  name: 'F1'
+  capacity: 1
+}
 
 @description('Kind of the OS to use for the App Service Plan')
 @allowed([
