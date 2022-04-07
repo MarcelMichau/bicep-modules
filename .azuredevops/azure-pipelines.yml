@@ -13,6 +13,8 @@ parameters:
         version: 0.1
       - name: function-app
         version: 0.1
+      - name: managed-identity
+        version: 0.1
       - name: resource-group
         version: 0.1
       - name: storage-account
