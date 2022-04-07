@@ -25,5 +25,5 @@ stages:
                   azureSubscription: PersonalSubscriptionServiceConnection
                   scriptLocation: 'inlineScript'
                   inlineScript: |
-                    az bicep publish --file ../modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/bicep/modules/${{module.name}}:v${{module.version}}
+                    az bicep publish --file modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/bicep/modules/${{module.name}}:v${{module.version}}
                 displayName: 'Publish Bicep Module - ${{module.name}}'
