@@ -15,3 +15,5 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
   properties: {}
 }
+
+output name string = resourceGroup.name
