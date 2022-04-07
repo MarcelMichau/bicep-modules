@@ -20,13 +20,19 @@ stages:
           vmImage: ubuntu-latest
 
         steps:
+          - task: AzureCLI@1
+            inputs:
+              azureSubscription: PersonalSubscriptionServiceConnection
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az bicep install
+            displayName: 'Install Bicep CLI'
+
           - ${{ each module in parameters.modulesToPublish }}:
               - task: AzureCLI@1
                 inputs:
                   azureSubscription: PersonalSubscriptionServiceConnection
                   scriptLocation: 'inlineScript'
                   inlineScript: |
-                    az version
-                    az bicep version
                     az bicep publish --file modules/${{module.name}}/main.bicep --target br:$(containerRegistry).azurecr.io/$(modulePath)/${{module.name}}:v${{module.version}}
                 displayName: 'Publish Bicep Module - ${{module.name}}'
