@@ -62,8 +62,8 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
 
 var storageBlobDataOwnerRoleDefinitionId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 
-resource storageAccountBlobDataOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: 'string'
+resource storageBlobDataOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid('${storageAccountName}-storage-blob-data-owner-role-assignment')
   scope: storageAccount
   properties: {
     principalId: functionApp.identity.principalId
