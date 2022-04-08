@@ -13,6 +13,12 @@ param appServicePlanName string
 @description('Name of the Storage Account used by the Function App')
 param storageAccountName string
 
+@description('Runtime stack version for the Function App')
+param linuxFxVersion string
+
+@description('Runtime for the Function App')
+param functionRuntime string = 'dotnet'
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' existing = {
   name: storageAccountName
 }
@@ -21,34 +27,25 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' existing = {
   name: appServicePlanName
 }
 
-var storageAccountKey = storageAccount.listKeys().keys[0].value
-
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   name: functionAppName
   location: location
   tags: tags
   kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: appServicePlan.id
+    httpsOnly: true
     siteConfig: {
+      linuxFxVersion: linuxFxVersion
       http20Enabled: true
       ftpsState: 'Disabled'
       appSettings: [
         {
-          name: 'AzureWebJobsDashboard'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey}'
-        }
-        {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: '${functionAppName}-${uniqueString(functionAppName)}'
+          name: 'AzureWebJobsStorage__accountName'
+          value: storageAccountName
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -56,9 +53,21 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet'
+          value: functionRuntime
         }
       ]
     }
+  }
+}
+
+var storageBlobDataOwnerRoleDefinitionId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+
+resource storageAccountBlobDataOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: 'string'
+  scope: storageAccount
+  properties: {
+    principalId: functionApp.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: storageBlobDataOwnerRoleDefinitionId
   }
 }
