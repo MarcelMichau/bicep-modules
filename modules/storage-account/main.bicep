@@ -48,6 +48,24 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     encryption: {
       keySource: 'Microsoft.Storage'
       requireInfrastructureEncryption: true
+      services: {
+        blob: {
+          enabled: true
+          keyType: 'Account'
+        }
+        file: {
+          enabled: true
+          keyType: 'Account'
+        }
+        queue: {
+          enabled: true
+          keyType: 'Account'
+        }
+        table: {
+          enabled: true
+          keyType: 'Account'
+        }
+      }
     }
   }
 }
