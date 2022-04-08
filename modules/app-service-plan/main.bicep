@@ -26,6 +26,12 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   location: location
   sku: sku
   kind: kind
+  properties: {
+    elasticScaleEnabled: false
+    targetWorkerCount: 1
+    zoneRedundant: false
+    reserved: kind == 'linux'
+  }
 }
 
 output name string = appServicePlan.name
