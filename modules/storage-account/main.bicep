@@ -30,6 +30,9 @@ param kind string = 'StorageV2'
 ])
 param sku string = 'Standard_LRS'
 
+@description('Blob access tier of the Storage Account')
+param accessTier string = 'Hot'
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
   location: location
@@ -37,6 +40,15 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   kind: kind
   sku: {
     name: sku
+  }
+  properties: {
+    accessTier: accessTier
+    minimumTlsVersion: 'TLS1_2'
+    supportsHttpsTrafficOnly: true
+    encryption: {
+      keySource: 'Microsoft.Storage'
+      requireInfrastructureEncryption: true
+    }
   }
 }
 
