@@ -71,3 +71,5 @@ resource storageBlobDataOwnerRoleAssignment 'Microsoft.Authorization/roleAssignm
     roleDefinitionId: storageBlobDataOwnerRoleDefinitionId
   }
 }
+
+output name string = functionApp.name
