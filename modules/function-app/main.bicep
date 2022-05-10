@@ -13,8 +13,8 @@ param appServicePlanName string
 @description('Name of the Storage Account used by the Function App')
 param storageAccountName string
 
-@description('Runtime stack version for the Function App')
-param linuxFxVersion string
+@description('Runtime stack version for the Function App - Required when not using Consumption Plan')
+param linuxFxVersion string = ''
 
 @description('Runtime for the Function App')
 param functionRuntime string = 'dotnet'
@@ -39,7 +39,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     serverFarmId: appServicePlan.id
     httpsOnly: true
     siteConfig: {
-      linuxFxVersion: linuxFxVersion
+      linuxFxVersion: empty(linuxFxVersion) ? null : linuxFxVersion
       http20Enabled: true
       ftpsState: 'Disabled'
       appSettings: [
