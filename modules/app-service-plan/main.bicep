@@ -2,7 +2,7 @@
 param appServicePlanName string = 'plan-test'
 
 @description('Location in which to create the App Service Plan')
-param location string = 'location'
+param location string = resourceGroup().location
 
 @description('Tags to apply to the App Service Plan')
 param tags object = {}

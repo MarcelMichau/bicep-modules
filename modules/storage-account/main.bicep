@@ -2,7 +2,7 @@
 param storageAccountName string = 'sttest'
 
 @description('Location in which to create the Storage Account')
-param location string = 'location'
+param location string = resourceGroup().location
 
 @description('Tags to apply to the Storage Account')
 param tags object = {}
