@@ -17,6 +17,10 @@ parameters:
         version: 0.1
       - name: resource-group
         version: 0.1
+      - name: sql-server
+        version: 0.1
+      - name: sql-database
+        version: 0.1
       - name: storage-account
         version: 0.1
 
