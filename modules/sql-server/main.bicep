@@ -1,5 +1,5 @@
 @description('The name of the SQL logical server')
-param serverName string = uniqueString('sql', resourceGroup().id)
+param serverName string
 
 @description('Location for all resources')
 param location string = resourceGroup().location
@@ -17,8 +17,6 @@ resource sqlServer 'Microsoft.Sql/servers@2021-11-01-preview' = {
   name: serverName
   location: location
   properties: {
-    administratorLogin: 'administrator'
-    administratorLoginPassword: '${uniqueString(serverName)}(!)123'
     administrators: {
       administratorType: 'ActiveDirectory'
       azureADOnlyAuthentication: true
