@@ -49,3 +49,5 @@ resource enableActiveDirectoryAuth 'Microsoft.Sql/servers/administrators@2021-11
     tenantId: azureAdAdministratorTenantId
   }
 }
+
+output name string = sqlServer.name

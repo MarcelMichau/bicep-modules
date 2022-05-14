@@ -23,3 +23,5 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-11-01-preview' = {
   sku: sku
   location: location
 }
+
+output name string = sqlDatabase.name
